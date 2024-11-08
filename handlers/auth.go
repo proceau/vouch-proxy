@@ -12,7 +12,7 @@ package handlers
 
 import (
 	"fmt"
-	"string"
+	"strings"
 	"net/http"
 
 	"github.com/vouch/vouch-proxy/pkg/cfg"
