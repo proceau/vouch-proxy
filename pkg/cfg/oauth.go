@@ -266,6 +266,9 @@ func setDefaultsGitHub() {
 		if len(Cfg.TeamWhiteList) > 0 {
 			GenOAuth.Scopes = append(GenOAuth.Scopes, "read:org")
 		}
+		if len(Cfg.RolesList) > 0 {
+			GenOAuth.Scopes = append(GenOAuth.Scopes, "roles")
+		}
 	}
 	GenOAuth.CodeChallengeMethod = "S256"
 }
