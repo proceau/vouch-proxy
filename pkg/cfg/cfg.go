@@ -55,6 +55,7 @@ type Config struct {
 	Domains       []string `mapstructure:"domains"`
 	WhiteList     []string `mapstructure:"whitelist"`
 	TeamWhiteList []string `mapstructure:"teamWhitelist"`
+	RolesList     []string `mapstructure:"roleslist"`
 	AllowAllUsers bool     `mapstructure:"allowAllUsers"`
 	PublicAccess  bool     `mapstructure:"publicAccess"`
 	TLS           struct {
