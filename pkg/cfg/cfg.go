@@ -55,7 +55,7 @@ type Config struct {
 	Domains       []string `mapstructure:"domains"`
 	WhiteList     []string `mapstructure:"whitelist"`
 	TeamWhiteList []string `mapstructure:"teamWhitelist"`
-	RolesList     []string `mapstructure:"roleslist"`
+	Roles         []string `mapstructure:"roles"`
 	AllowAllUsers bool     `mapstructure:"allowAllUsers"`
 	PublicAccess  bool     `mapstructure:"publicAccess"`
 	TLS           struct {
@@ -416,9 +416,10 @@ func basicTest() error {
 	}
 
 	// Domains is required _unless_ Cfg.AllowAllUsers is set
-	if (!Cfg.AllowAllUsers && len(Cfg.Domains) == 0) ||
-		(Cfg.AllowAllUsers && len(Cfg.Domains) > 0) {
-		return fmt.Errorf("configuration error: either one of %s or %s needs to be set (but not both)", Branding.LCName+".domains", Branding.LCName+".allowAllUsers")
+	if (!Cfg.AllowAllUsers && len(Cfg.Domains) == 0 && len(Cfg.Roles) == 0 ||
+	    (Cfg.AllowAllUsers && ( len(Cfg.Domains) > 0) || len(Cfg.Roles) > 0 )
+	{
+		return fmt.Errorf("configuration error: either one of %s or %s needs to be set (but not both)", Branding.LCName+".domains/roles", Branding.LCName+".allowAllUsers")
 	}
 
 	// issue a warning if the secret is too small
