@@ -153,7 +153,7 @@ func verifyUser(u interface{}) (bool, error) {
 	case len(cfg.Cfg.Roles) != 0:
 		for _, wl := range cfg.Cfg.Roles {
 			role, value, found := strings.Cut(wl, "/")
-			if found && user[role].role == value {
+			if found && user.resource_access.test-php.role == value {
 				log.Debugf("verifyUser: Success! found user.Username in WhiteList: %s", user.Username)
 				return true, nil
 			}
