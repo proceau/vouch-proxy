@@ -180,11 +180,10 @@ func verifyUser(u interface{}) (bool, error) {
 		}
 		//return false, fmt.Errorf("verifyUser: Email %s is not within a %s managed domain", user.Email, cfg.Branding.FullName)
 
-	// nothing configured, allow everyone through
-	default:
-		log.Warn("verifyUser: no domains, whitelist, roles, teamWhitelist or AllowAllUsers matched or configured, authorizes deny")
-		return false, nil
 	}
+	// nothing configured, allow everyone through
+	log.Warn("verifyUser: no domains, whitelist, roles, teamWhitelist or AllowAllUsers matched or configured, authorizes deny")
+	return false, nil
 }
 
 func getUserInfo(r *http.Request, user *structs.User, customClaims *structs.CustomClaims, ptokens *structs.PTokens, opts ...oauth2.AuthCodeOption) error {
