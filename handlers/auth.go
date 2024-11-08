@@ -146,7 +146,18 @@ func verifyUser(u interface{}) (bool, error) {
 				return true, nil
 			}
 		}
-		return false, fmt.Errorf("verifyUser: user.Username not found in WhiteList: %s", user.Username)
+		//return false, fmt.Errorf("verifyUser: user.Username not found in WhiteList: %s", user.Username)
+
+	// Roles
+	case len(cfg.Cfg.Roles) != 0:
+		for _, wl := range cfg.Cfg.Roles {
+			role, value, found := strings.Cut(wl, "/")
+			if found && user[role].role == value {
+				log.Debugf("verifyUser: Success! found user.Username in WhiteList: %s", user.Username)
+				return true, nil
+			}
+		}
+		//return false, fmt.Errorf("verifyUser: user.Username not found in Roles: %s", user.Username)
 
 	// TeamWhiteList
 	case len(cfg.Cfg.TeamWhiteList) != 0:
@@ -158,7 +169,7 @@ func verifyUser(u interface{}) (bool, error) {
 				}
 			}
 		}
-		return false, fmt.Errorf("verifyUser: user.TeamMemberships %s not found in TeamWhiteList: %s for user %s", user.TeamMemberships, cfg.Cfg.TeamWhiteList, user.Username)
+		//return false, fmt.Errorf("verifyUser: user.TeamMemberships %s not found in TeamWhiteList: %s for user %s", user.TeamMemberships, cfg.Cfg.TeamWhiteList, user.Username)
 
 	// Domains
 	case len(cfg.Cfg.Domains) != 0:
@@ -166,12 +177,12 @@ func verifyUser(u interface{}) (bool, error) {
 			log.Debugf("verifyUser: Success! Email %s found within a %s managed domain", user.Email, cfg.Branding.FullName)
 			return true, nil
 		}
-		return false, fmt.Errorf("verifyUser: Email %s is not within a %s managed domain", user.Email, cfg.Branding.FullName)
+		//return false, fmt.Errorf("verifyUser: Email %s is not within a %s managed domain", user.Email, cfg.Branding.FullName)
 
 	// nothing configured, allow everyone through
 	default:
-		log.Warn("verifyUser: no domains, whitelist, teamWhitelist or AllowAllUsers configured, any successful auth to the IdP authorizes access")
-		return true, nil
+		log.Warn("verifyUser: no domains, whitelist, roles, teamWhitelist or AllowAllUsers matched or configured, authorizes deny")
+		return false, nil
 	}
 }
 
